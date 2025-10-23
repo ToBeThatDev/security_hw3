@@ -146,18 +146,19 @@ def initialize_parameters(n_input, n_hidden):
     Hint: Use np.random.randn() * 0.1 for weights and np.zeros() for biases
     """
     # TODO: Initialize W1
-    W1 = None  # REPLACE THIS
+    W1 = np.random.randn(n_input, n_hidden) * 0.1
     
     # TODO: Initialize b1
-    b1 = None  # REPLACE THIS
+    b1 = np.zeros(1, n_hidden)
     
     # TODO: Initialize W2
-    W2 = None  # REPLACE THIS
+    W2 = np.random.randn(n_input, n_hidden) * 0.1
     
     # TODO: Initialize b2
-    b2 = None  # REPLACE THIS
+    b2 = np.zeros(1, n_hidden)
+
     # TODO: Implement return
-    return {} # REPLACE THIS
+    return [W1, b1, W2, b2]
 
 
 def forward_propagation(X, params):
