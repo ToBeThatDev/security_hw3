@@ -104,7 +104,7 @@ def sigmoid(z):
     Hint: Use np.exp() and np.clip() to prevent overflow
     """
     # TODO: Implement sigmoid activation
-    return None  # REPLACE THIS
+    return 1 / (1 + np.exp(-z))
 
 
 def relu(z):
@@ -115,7 +115,7 @@ def relu(z):
     Hint: Use np.maximum()
     """
     # TODO: Implement ReLU activation
-    return None  # REPLACE THIS
+    return np.maximum([0,z])
 
 
 def relu_derivative(z):
@@ -126,7 +126,7 @@ def relu_derivative(z):
     Hint: Use boolean indexing and convert to float
     """
     # TODO: Implement ReLU derivative
-    return None  # REPLACE THIS
+    return 1.0 if z > 0 else 0.0
 
 
 # ============================================================================
