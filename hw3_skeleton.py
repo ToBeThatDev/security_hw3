@@ -115,7 +115,7 @@ def relu(z):
     Hint: Use np.maximum()
     """
     # TODO: Implement ReLU activation
-    return np.maximum([0,z])
+    return np.maximum(0,z)
 
 
 def relu_derivative(z):
@@ -126,7 +126,7 @@ def relu_derivative(z):
     Hint: Use boolean indexing and convert to float
     """
     # TODO: Implement ReLU derivative
-    return 1.0 if z > 0 else 0.0
+    return (z > 0).astype(float)
 
 
 # ============================================================================
@@ -149,16 +149,16 @@ def initialize_parameters(n_input, n_hidden):
     W1 = np.random.randn(n_input, n_hidden) * 0.1
     
     # TODO: Initialize b1
-    b1 = np.zeros(1, n_hidden)
+    b1 = np.zeros((1, n_hidden))
     
     # TODO: Initialize W2
-    W2 = np.random.randn(n_input, n_hidden) * 0.1
+    W2 = np.random.randn(n_hidden, 1) * 0.1
     
     # TODO: Initialize b2
-    b2 = np.zeros(1, n_hidden)
+    b2 = np.zeros((1, 1))
 
     # TODO: Implement return
-    return [W1, b1, W2, b2]
+    return {'W1': W1, 'b1': b1, 'W2': W2, 'b2': b2}
 
 
 def forward_propagation(X, params):
@@ -178,16 +178,19 @@ def forward_propagation(X, params):
     
     Hint: Use np.dot() or @ for matrix multiplication
     """
+    W1, b1 = params["W1"], params["b1"]
+    W2, b2 = params["W2"], params["b2"]
+
     # TODO: Implement hidden layer forward pass
-    Z1 = None  # REPLACE THIS
-    A1 = None  # REPLACE THIS
-    
+    Z1 = X @ W1 + b1
+    A1 = relu(Z1)
+
     # TODO: Implement output layer forward pass
-    Z2 = None  # REPLACE THIS
-    A2 = None  # REPLACE THIS
+    Z2 = A1 @ W2 + b2
+    A2 = sigmoid(Z2)
     
     # TODO: Implement cache
-    cache = {} # REPLACE THIS
+    cache = {'Z1': Z1, 'A1': A1, 'Z2': Z2, 'A2':A2}
     return A2, cache
 
 
@@ -204,7 +207,7 @@ def compute_cost(A2, y):
     epsilon = 1e-8
     
     # TODO: Compute binary cross-entropy cost
-    cost = None  # REPLACE THIS
+    cost = -np.mean(y * np.log(A2 + epsilon) + (1 - y) * np.log(1 - A2 + epsilon))
     
     return cost
 
