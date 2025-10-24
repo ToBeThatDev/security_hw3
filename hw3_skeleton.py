@@ -232,20 +232,23 @@ def backward_propagation(X, y, params, cache):
     Hint: Use np.sum() with axis=0 and keepdims=True for bias gradients
     """
     m = X.shape[0]
+    W2 = params["W2"]
+    A1, A2 = cache["A1"], cache["A2"]
+    Z1, Z2 = cache["Z1"], cache["Z2"]
     
     # TODO: Compute output layer gradients
-    dZ2 = None  # REPLACE THIS
-    dW2 = None  # REPLACE THIS
-    db2 = None  # REPLACE THIS
+    dZ2 = A2 - y
+    dW2 = (A1.T @ dZ2) / m
+    db2 = np.sum(dZ2, axis=0, keepdims=True) / m
     
     # TODO: Compute hidden layer gradients
-    dA1 = None  # REPLACE THIS
-    dZ1 = None  # REPLACE THIS
-    dW1 = None  # REPLACE THIS
-    db1 = None  # REPLACE THIS
+    dA1 = dZ2 @ W2.T
+    dZ1 = dA1 * relu_derivative(Z1)
+    dW1 = (X.T @ dZ1) / m
+    db1 = np.sum(dZ1, axis=0, keepdims=True) / m
     
     # TODO: Implement return
-    return {} # REPLACE THIS
+    return {"dW1": dW1, "db1": db1, "dW2": dW2,"db2": db2}
 
 
 def update_parameters(params, grads, learning_rate):
@@ -258,16 +261,16 @@ def update_parameters(params, grads, learning_rate):
     param = param - learning_rate * grad
     """
     # TODO: Update W1
-    params['W1'] = None  # REPLACE THIS
+    params['W1'] -= learning_rate * grads['dW1']
     
     # TODO: Update b1
-    params['b1'] = None  # REPLACE THIS
+    params['b1'] -= learning_rate * grads['db1']
     
     # TODO: Update W2
-    params['W2'] = None  # REPLACE THIS
+    params['W2'] -= learning_rate * grads['dW2']
     
     # TODO: Update b2
-    params['b2'] = None  # REPLACE THIS
+    params['b2'] -= learning_rate * grads['db2']
     
     return params
 
@@ -311,17 +314,17 @@ def train_network(X_train, y_train, X_val, y_val, learning_rate, n_iterations=15
     
     for i in range(n_iterations):
         # TODO: Forward propagation
-        A2, cache = None, None  # REPLACE THIS
+        A2, cache = forward_propagation(X_train, params)
         
         # TODO: Compute training cost
-        train_cost = None  # REPLACE THIS
+        train_cost = compute_cost(A2, y_train)
         train_costs.append(train_cost)
         
         # TODO: Backward propagation
-        grads = None  # REPLACE THIS
+        grads = backward_propagation(X_train, y_train, params, cache)
         
         # TODO: Update parameters
-        params = None  # REPLACE THIS
+        params = update_parameters(params, grads, learning_rate)
         
         # Validation metrics (provided)
         A2_val, _ = forward_propagation(X_val, params)
